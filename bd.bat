@@ -25,31 +25,34 @@ IF "%~1"=="" (
 
 ) ELSE (
 
-        IF EXIST bd.class (
+        SET mypath=%~dp0
+
+        IF EXIST %mypath%bd.class. (
 
             SETLOCAL ENABLEDELAYEDEXPANSION
 
             SET BD_SEARCH_STRING="%~1"
 
-            FOR /F "delims=" %%i in ('java bd !BD_SEARCH_STRING!') do (
+            FOR /F "delims=" %%i in ('java -classpath %mypath% bd !BD_SEARCH_STRING!') do (
                
                 SET BD_SEARCH_STRING=
                 
                 ENDLOCAL
 
                 CD %%i
+
             )
 
 
-            IF "!BD_SEARCH_STRING!"=="" (
+            IF NOT "!BD_SEARCH_STRING!"=="" (
 
               ECHO.
 
             ) ELSE (
             
-            ECHO "%~1" not found.
-            SET BD_SEARCH_STRING=
-            ENDLOCAL
+              ECHO "%~1" not found.
+              SET BD_SEARCH_STRING=
+              ENDLOCAL
 
             )
 
